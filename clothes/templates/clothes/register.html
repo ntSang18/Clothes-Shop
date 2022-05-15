@@ -4,28 +4,29 @@
     <br />
     <form action="{% url 'clothes:register' %}" method="post">
         {% csrf_token %}
-        <div class="mb-3">
-            <label for="user_name" class="form-label">User name</label>
+        <div class="form-floating mb-3">
             <input
                 type="text"
                 class="form-control"
                 name="user_name"
                 id="user_name"
+                placeholder="User name"
                 required
             />
+            <label for="user_name" class="form-label">User name</label>
         </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
+        <div class="form-floating mb-3">
             <input
                 type="password"
                 class="form-control"
                 name="password"
                 id="password"
+                placeholder="Password"
                 required
             />
+            <label for="password" class="form-label">Password</label>
         </div>
-        <div class="mb-3">
-            <label for="phone" class="form-label">Phone number</label>
+        <div class="form-floating mb-3">
             <input
                 type="text"
                 class="form-control"
@@ -34,26 +35,29 @@
                 placeholder="(84+)777908037"
                 required
             />
+            <label for="phone" class="form-label">Phone number</label>
         </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
+        <div class="form-floating mb-3">
             <input
                 type="email"
                 class="form-control"
                 name="email"
                 id="email"
+                placeholder="Email address"
                 required
             />
+            <label for="email" class="form-label">Email address</label>
         </div>
-        <div class="mb-3">
-            <label for="full_name" class="form-label">Full name</label>
+        <div class="form-floating mb-3">
             <input
                 type="text"
                 class="form-control"
                 name="full_name"
                 id="full_name"
+                placeholder="Full name"
                 required
             />
+            <label for="full_name" class="form-label">Full name</label>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

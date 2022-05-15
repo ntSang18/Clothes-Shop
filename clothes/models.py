@@ -27,13 +27,19 @@ class Product(models.Model):
         return self.product_name
 
 
+class Product_adapter(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product_size = models.ForeignKey(Product_size, on_delete=models.CASCADE)
+    number_product = models.IntegerField()
+
+
 class User(models.Model):
     user_name = models.CharField(max_length=200, unique=True)
     password = models.CharField(max_length=200)
     phone = models.CharField(max_length=200, unique=True)
     email = models.EmailField(max_length=254, unique=True)
     full_name = models.CharField(max_length=200)
-    cart = models.ManyToManyField(Product)
+    cart = models.ManyToManyField(Product_adapter)
 
     def __str__(self):
         return self.user_name

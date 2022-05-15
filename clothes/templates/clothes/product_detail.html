@@ -9,12 +9,48 @@
     </head>
     {% block content %}
     <body>
-        <img src="{{ product.image.url }}" alt="" />
-        <h4>{{ product.product_name }}</h4>
-        <p>{{ product.price }}&#8363;</p>
-        {% for size in product.product_size.all %}
-        <p>{{ size.product_size }}</p>
-        {% endfor %}
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <img src="{{ product.image.url }}" alt="" />
+                </div>
+                <div class="col">
+                    <div class="container">
+                        <div class="row row-cols-1">
+                            <div class="col">
+                                <h4>{{ product.product_name }}</h4>
+                                <p>Giá: {{ product.price }}&#8363;</p>
+                            </div>
+                            <div class="col">
+                                {% for size in product.product_size.all %}
+                                <div class="form-check form-check-inline">
+                                    <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="inlineRadioOptions"
+                                        id="size{{ forloop.counter }}"
+                                        value="{{ size.id }}"
+                                    />
+                                    <label
+                                        class="form-check-label"
+                                        for="size{{ forloop.counter }}"
+                                        >{{ size.product_size }}</label
+                                    >
+                                </div>
+                                {% endfor %}
+                                <br />
+                                <label for="inlineRadio1">Số Lượng: </label>
+                                <input type="number" />
+                                <br />
+                                <button>Thêm vào giỏ hàng</button>
+                                <button>Mua ngay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <a href=""></a>
     </body>
     {% endblock %}
