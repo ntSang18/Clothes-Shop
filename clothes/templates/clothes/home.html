@@ -7,6 +7,16 @@
         <title>Clothes Shop</title>
     </head>
     <body>
+        {% if product_list %}
+        <ul>
+            {% for product in product_list %}
+            <h1>{{ product.product_name }}</h1>
+            <img src="{{ product.image.url }}" width="500" />
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No product are available.</p>
+        {% endif %}
         <a href="{% url 'clothes:register' %}">Register here</a>
     </body>
 </html>

@@ -2,11 +2,13 @@ from hashlib import new
 from unicodedata import name
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import User
+from .models import User, Product
 
 
-def index(request):
-    return render(request, template_name='clothes/index.html')
+def home(request):
+    product_list = Product.objects.all()
+    context = {'product_list': product_list}
+    return render(request, template_name='clothes/home.html', context=context)
 
 
 def register(request):
