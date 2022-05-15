@@ -1,3 +1,4 @@
+{% extends 'clothes/base.html' %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -6,17 +7,48 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Clothes Shop</title>
     </head>
+    {% block content %}
     <body>
         {% if product_list %}
         <ul>
-            {% for product in product_list %}
-            <h1>{{ product.product_name }}</h1>
-            <img src="{{ product.image.url }}" width="500" />
-            {% endfor %}
+            <div class="row row-cols-auto">
+                {% for product in product_list %}
+                <div class="col">
+                    <div class="card h-100" style="width: 15rem">
+                        <img
+                            src="{{ product.image.url }}"
+                            class="card-img-top"
+                            alt="..."
+                        />
+                        <div class="card-body">
+                            <h5
+                                class="card-title"
+                                style="
+                                    text-overflow: ellipsis;
+                                    overflow: hidden;
+                                    width: 160px;
+                                    height: 1.2em;
+                                    white-space: nowrap;
+                                "
+                            >
+                                {{ product.product_name }}
+                            </h5>
+                            <p class="card-text">
+                                Giá: {{ product.price }}&#8363;
+                            </p>
+                            <a
+                                href="{% url 'clothes:product_detail' product.id %}"
+                                class="stretched-link"
+                            ></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </ul>
         {% else %}
         <p>No product are available.</p>
         {% endif %}
-        <a href="{% url 'clothes:register' %}">Register here</a>
     </body>
+    {% endblock %}
 </html>

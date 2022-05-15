@@ -1,0 +1,21 @@
+{% extends 'clothes/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    {% block content %}
+    <body>
+        <img src="{{ product.image.url }}" alt="" />
+        <h4>{{ product.product_name }}</h4>
+        <p>{{ product.price }}&#8363;</p>
+        {% for size in product.product_size.all %}
+        <p>{{ size.product_size }}</p>
+        {% endfor %}
+        <a href=""></a>
+    </body>
+    {% endblock %}
+</html>
