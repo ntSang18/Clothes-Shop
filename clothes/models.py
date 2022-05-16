@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Product_type(models.Model):
-    product_type = models.CharField(max_length=200)
+    product_type = models.CharField(max_length=200, unique=True)
 
     def __str__(self) -> str:
         return self.product_type

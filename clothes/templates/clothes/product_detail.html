@@ -9,6 +9,7 @@
     </head>
     {% block content %}
     <body>
+        {{ product.id|json_script:"product_id" }}
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -25,9 +26,8 @@
                                 {% for size in product.product_size.all %}
                                 <div class="form-check form-check-inline">
                                     <input
-                                        class="form-check-input"
                                         type="radio"
-                                        name="inlineRadioOptions"
+                                        name="size_id"
                                         id="size{{ forloop.counter }}"
                                         value="{{ size.id }}"
                                     />
@@ -39,11 +39,46 @@
                                 </div>
                                 {% endfor %}
                                 <br />
-                                <label for="inlineRadio1">Số Lượng: </label>
-                                <input type="number" />
+                                <label for="number">Số Lượng: </label>
+                                <input
+                                    type="number"
+                                    name="number"
+                                    value="1"
+                                    min="1"
+                                    max="100"
+                                    id="number"
+                                />
                                 <br />
-                                <button>Thêm vào giỏ hàng</button>
-                                <button>Mua ngay</button>
+                                <a
+                                    href="{% url 'clothes:add_to_cart' product_id=product.id size_id=2 number=2 %}"
+                                    >Thêm vào giỏ hàng</a
+                                >
+                                <button onclick="Add()">Mua ngay</button>
+                                <script>
+                                    var product_id = "{{product.id}}";
+                                    var number =
+                                        document.querySelector("#number").value;
+                                    function Add() {
+                                        // var size_id = document.querySelector(
+                                        //     'input[name="size_id"]:checked'
+                                        // ).value;
+                                        var number =
+                                            document.querySelector(
+                                                "#number"
+                                            ).value;
+                                        var product_id = JSON.parse(
+                                            document.getElementById(
+                                                "product_id"
+                                            ).textContent
+                                        );
+                                        alert(size_id);
+                                        // if (size_id == null) {
+                                        //     alert("ban");
+                                        // } else {
+                                        //     alert(product_id);
+                                        // }
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>

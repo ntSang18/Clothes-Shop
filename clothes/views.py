@@ -1,11 +1,28 @@
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404
-from .models import User, Product
+from .models import Product_adapter, Product_size, Product_type, User, Product
 
 
-def home(request):
-    product_list = Product.objects.all()
-    context = {'product_list': product_list}
+def home(request, type=""):
+    # Create session type_list
+    if 'type_list' not in request.session:
+        request.session['type_list'] = []
+        type_list = Product_type.objects.all()
+        for type in type_list:
+            request.session['type_list'].insert(0, type.product_type)
+    request.session.modified = True
+
+    if type == "":
+        product_list = Product.objects.all()
+        context = {
+            'product_list': product_list,
+        }
+    else:
+        product_type = get_object_or_404(Product_type, product_type=type)
+        product_list = product_type.product_set.all()
+        context = {
+            'product_list': product_list,
+        }
     return render(request, template_name='clothes/home.html', context=context)
 
 
@@ -19,6 +36,9 @@ def register(request):
         new_user.full_name = request.POST['full_name']
         try:
             new_user.save()
+            if 'user_id' not in request.session:
+                request.session['user_id'] = new_user.id
+            request.session.modified = True
             return home(request)
         except IntegrityError as e:
             context = {
@@ -46,3 +66,13 @@ def login(request):
 def product_detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     return render(request=request, template_name='clothes/product_detail.html', context={'product': product})
+
+
+def add_to_cart(request, product_id, size_id, number):
+    product = get_object_or_404(Product, pk=product_id)
+    product_size = get_object_or_404(Product_size, pk=size_id)
+    product_adapter = Product_adapter(
+        product=product, product_size=product_size, number_product=number)
+    product_adapter.save()
+    user = get_object_or_404(User, pk=request.session['user_id'])
+    user.cart.add(product_adapter)
