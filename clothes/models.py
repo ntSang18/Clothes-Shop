@@ -32,6 +32,9 @@ class Product_adapter(models.Model):
     product_size = models.ForeignKey(Product_size, on_delete=models.CASCADE)
     number_product = models.IntegerField()
 
+    def __str__(self):
+        return self.product.product_name
+
 
 class User(models.Model):
     user_name = models.CharField(max_length=200, unique=True)

@@ -1,10 +1,16 @@
 from django.db import IntegrityError
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product_adapter, Product_size, Product_type, User, Product
+from django.contrib import messages
 
 
 def home(request, type=""):
     # Create session type_list
+    if 'user_id' not in request.session:
+        request.session['user_id'] = -1
+    if 'user_name' not in request.session:
+        request.session['user_name'] = ""
+    request.session.modified = True
     if 'type_list' not in request.session:
         request.session['type_list'] = []
         type_list = Product_type.objects.all()
@@ -36,14 +42,14 @@ def register(request):
         new_user.full_name = request.POST['full_name']
         try:
             new_user.save()
-            if 'user_id' not in request.session:
-                request.session['user_id'] = new_user.id
+            request.session['user_id'] = new_user.id
+            request.session['user_name'] = new_user.user_name
             request.session.modified = True
-            return home(request)
+            return redirect('clothes:home')
         except IntegrityError as e:
-            context = {
-                "message": "user name, phone number or email already exists..."}
-            return render(request, 'clothes/404.html', context=context)
+            messages.success(
+                request, ("user name, phone number or email address already exits!"))
+            return redirect('clothes:register')
     else:
         return render(request, 'clothes/register.html')
 
@@ -52,15 +58,22 @@ def login(request):
     if request.method == 'POST':
         user_name = request.POST['user_name']
         password = request.POST['password']
-        user = User.objects.filter(user_name=user_name, password=password)
-        if user.count() == 1:
-            return home(request)
-        else:
-            context = {
-                "message": "User name or password incorrect"}
-            return render(request, 'clothes/404.html', context=context)
+        try:
+            user = User.objects.get(user_name=user_name, password=password)
+            request.session['user_id'] = user.id
+            request.session['user_name'] = user.user_name
+            request.session.modified = True
+            return redirect('clothes:home')
+        except:
+            messages.success(request, ("user name or password incorrect!"))
+            return redirect('clothes:login')
     else:
         return render(request, 'clothes/login.html')
+
+
+def logout(request):
+    request.session['user_id'] = -1
+    return redirect('clothes:home')
 
 
 def product_detail(request, product_id):
@@ -68,7 +81,11 @@ def product_detail(request, product_id):
     return render(request=request, template_name='clothes/product_detail.html', context={'product': product})
 
 
-def add_to_cart(request, product_id, size_id, number):
+def add_to_cart(request):
+    product_id = request.POST['product_id']
+    size_id = request.POST['size_id']
+    number = request.POST['number']
+
     product = get_object_or_404(Product, pk=product_id)
     product_size = get_object_or_404(Product_size, pk=size_id)
     product_adapter = Product_adapter(
@@ -76,3 +93,4 @@ def add_to_cart(request, product_id, size_id, number):
     product_adapter.save()
     user = get_object_or_404(User, pk=request.session['user_id'])
     user.cart.add(product_adapter)
+    return redirect('clothes:product_detail', product_id=product_id)
