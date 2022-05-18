@@ -1,82 +1,73 @@
-{% extends 'clothes/base.html' %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-    </head>
-    {% block content %}
-    <body>
-        {{ product.id|json_script:"product_id" }}
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <img src="{{ product.image.url }}" alt="" />
-                </div>
-                <div class="col">
-                    <div class="container">
-                        <div class="row row-cols-1">
-                            <div class="col">
-                                <h4>{{ product.product_name }}</h4>
-                                <p>Giá: {{ product.price }}&#8363;</p>
-                            </div>
-                            <div class="col">
-                                <form
-                                    action="{% url 'clothes:add_to_cart' %}"
-                                    method="post"
-                                >
-                                    {% csrf_token %}
+{% extends 'clothes/base.html' %} {% block content %}
+<body>
+    {{ product.id|json_script:"product_id" }}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <img src="{{ product.image.url }}" alt="" />
+            </div>
+            <div class="col">
+                <div class="container">
+                    <div class="row row-cols-1">
+                        <div class="col">
+                            <h4>{{ product.product_name }}</h4>
+                            <p>Giá: {{ product.price }}&#8363;</p>
+                        </div>
+                        <div class="col">
+                            <form
+                                action="{% url 'clothes:add_cart_item' %}"
+                                method="post"
+                            >
+                                {% csrf_token %}
+                                <input
+                                    type="text"
+                                    name="product_id"
+                                    value="{{ product.id }}"
+                                    hidden
+                                />
+                                {% for size in product.product_size.all %}
+                                <div class="form-check form-check-inline">
                                     <input
-                                        type="text"
-                                        name="product_id"
-                                        value="{{ product.id }}"
-                                        hidden
+                                        type="radio"
+                                        name="size_id"
+                                        id="size{{ forloop.counter }}"
+                                        value="{{ size.id }}"
+                                        required
                                     />
-                                    {% for size in product.product_size.all %}
-                                    <div class="form-check form-check-inline">
-                                        <input
-                                            type="radio"
-                                            name="size_id"
-                                            id="size{{ forloop.counter }}"
-                                            value="{{ size.id }}"
-                                        />
-                                        <label
-                                            class="form-check-label"
-                                            for="size{{ forloop.counter }}"
-                                            >{{ size.product_size }}</label
-                                        >
-                                    </div>
-                                    {% endfor %}
-                                    <br />
-                                    <label for="number">Số Lượng: </label>
-                                    <input
-                                        type="number"
-                                        name="number"
-                                        value="1"
-                                        min="1"
-                                        max="100"
-                                        id="number"
-                                    />
-                                    <br />
-                                    <input
-                                        type="submit"
-                                        value="Thêm vào giỏ hàng"
-                                    />
+                                    <label
+                                        class="form-check-label"
+                                        for="size{{ forloop.counter }}"
+                                        >{{ size.product_size }}</label
+                                    >
+                                </div>
+                                {% endfor %}
+                                <br />
+                                <label for="number">Số Lượng: </label>
+                                <input
+                                    type="number"
+                                    name="number"
+                                    min="1"
+                                    max="100"
+                                    id="number"
+                                    required
+                                />
+                                <br />
+                                <input
+                                    type="submit"
+                                    value="Thêm vào giỏ hàng"
+                                />
 
-                                    <input
-                                        type="submit"
-                                        formaction="#"
-                                        value="Mua ngay"
-                                    />
-                                </form>
-                            </div>
+                                <input
+                                    type="submit"
+                                    formaction="{% url 'clothes:order_view' %}"
+                                    value="Mua ngay"
+                                />
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
-    {% endblock %}
-</html>
+    </div>
+</body>
+{% endblock %}

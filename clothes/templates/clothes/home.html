@@ -1,54 +1,38 @@
-{% extends 'clothes/base.html' %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Clothes Shop</title>
-    </head>
-    {% block content %}
-    <body>
-        {% if product_list %}
-        <ul>
-            <div class="row row-cols-auto">
-                {% for product in product_list %}
-                <div class="col">
-                    <div class="card h-100" style="width: 15rem">
-                        <img
-                            src="{{ product.image.url }}"
-                            class="card-img-top"
-                            alt="..."
-                        />
-                        <div class="card-body">
-                            <h5
-                                class="card-title"
-                                style="
-                                    text-overflow: ellipsis;
-                                    overflow: hidden;
-                                    width: 160px;
-                                    height: 1.2em;
-                                    white-space: nowrap;
-                                "
-                            >
-                                {{ product.product_name }}
-                            </h5>
-                            <p class="card-text">
-                                Giá: {{ product.price }}&#8363;
-                            </p>
-                            <a
-                                href="{% url 'clothes:product_detail' product.id %}"
-                                class="stretched-link"
-                            ></a>
-                        </div>
-                    </div>
+{% extends 'clothes/base.html' %} {% block content %} {% if product_list %}
+<ul>
+    <div class="row row-cols-auto">
+        {% for product in product_list %}
+        <div class="col">
+            <div class="card h-100" style="width: 15rem">
+                <img
+                    src="{{ product.image.url }}"
+                    class="card-img-top"
+                    alt="..."
+                />
+                <div class="card-body">
+                    <h5
+                        class="card-title"
+                        style="
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            display: -webkit-box;
+                            -webkit-line-clamp: 1; /* number of lines to show */
+                            -webkit-box-orient: vertical;
+                        "
+                    >
+                        {{ product.product_name }}
+                    </h5>
+                    <p class="card-text">Giá: {{ product.price }}&#8363;</p>
+                    <a
+                        href="{% url 'clothes:product_detail' product.id %}"
+                        class="stretched-link"
+                    ></a>
                 </div>
-                {% endfor %}
             </div>
-        </ul>
-        {% else %}
-        <p>No product are available.</p>
-        {% endif %}
-    </body>
-    {% endblock %}
-</html>
+        </div>
+        {% endfor %}
+    </div>
+</ul>
+{% else %}
+<p>No product are available.</p>
+{% endif %} {% endblock %}

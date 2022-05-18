@@ -1,0 +1,61 @@
+{% extends 'clothes/base.html' %} {% block content %} {% if cart_list %}
+<div class="container-fluid">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for item in cart_list %}
+        <div class="g-col-6">
+            <div class="card mb-3" style="max-width: 540px">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img
+                            src="{{ item.product.image.url }}"
+                            class="img-fluid rounded-start"
+                            alt="..."
+                        />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h6
+                                class="card-title"
+                                style="
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 1; /* number of lines to show */
+                                    -webkit-box-orient: vertical;
+                                "
+                            >
+                                {{ item.product.product_name }}
+                            </h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    Tổng giá: {{ item.sum_price }}
+                                </li>
+                                <li class="list-group-item">
+                                    Số lượng: {{ item.number_product }}
+                                </li>
+                                <li class="list-group-item">
+                                    Size: {{ item.product_size }}
+                                </li>
+                            </ul>
+                            <a
+                                href="{% url 'clothes:del_cart_item' item.id %}"
+                                class="btn btn-primary"
+                                >Xóa</a
+                            >
+                            <a
+                                href="{% url 'clothes:order_view' item.id %}"
+                                class="btn btn-primary"
+                                >Mua hàng</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<p>No item are available.</p>
+{% endif %} {% endblock %}

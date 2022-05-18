@@ -1,30 +1,32 @@
 {% extends 'clothes/base.html' %} {% block content %}
-<center><h1>Login</h1></center>
-<br />
-<form action="{% url 'clothes:login' %}" method="post">
-    {% csrf_token %}
-    <div class="form-floating mb-3">
-        <input
-            type="text"
-            class="form-control"
-            name="user_name"
-            id="user_name"
-            placeholder="User name"
-            required
-        />
-        <label for="user_name" class="form-label">User name</label>
-    </div>
-    <div class="form-floating mb-3">
-        <input
-            type="password"
-            class="form-control"
-            name="password"
-            id="password"
-            placeholder="Password"
-            required
-        />
-        <label for="password" class="form-label">Password</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="container">
+    <center><h1>Login</h1></center>
+    <br />
+    <form action="{% url 'clothes:login' %}" method="post">
+        {% csrf_token %}
+        <div class="form-floating mb-3">
+            <input
+                type="text"
+                class="form-control"
+                name="user_name"
+                id="user_name"
+                placeholder="User name"
+                required
+            />
+            <label for="user_name" class="form-label">User name</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input
+                type="password"
+                class="form-control"
+                name="password"
+                id="password"
+                placeholder="Password"
+                required
+            />
+            <label for="password" class="form-label">Password</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
 {% endblock %}
