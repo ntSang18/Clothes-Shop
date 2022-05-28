@@ -18,10 +18,9 @@ class Product_size(models.Model):
 
 class Product(models.Model):
     product_name = models.TextField(max_length=200)
-    
+
     image = models.ImageField(upload_to="images/")
     price = models.IntegerField()
-    froduct_for_male = models.BooleanField()
     product_type = models.ForeignKey(Product_type, on_delete=models.CASCADE)
     product_size = models.ManyToManyField(Product_size)
 
