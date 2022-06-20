@@ -1,5 +1,5 @@
 from django.db import IntegrityError
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
 from .models import Cart_item, Product_size, Product_type, User, Product, Order, Order_item
 from django.contrib import messages
 
@@ -18,17 +18,24 @@ def home(request, type=""):
             request.session['type_list'].insert(0, type.product_type)
     request.session.modified = True
 
-    if type == "":
-        product_list = Product.objects.all()
+    if request.method == 'POST':
+        search = request.POST['search']
+        product_list = Product.objects.filter(product_name__contains=search)
         context = {
             'product_list': product_list,
         }
     else:
-        product_type = get_object_or_404(Product_type, product_type=type)
-        product_list = product_type.product_set.all()
-        context = {
-            'product_list': product_list,
-        }
+        if type == "":
+            product_list = Product.objects.all()
+            context = {
+                'product_list': product_list,
+            }
+        else:
+            product_type = get_object_or_404(Product_type, product_type=type)
+            product_list = product_type.product_set.all()
+            context = {
+                'product_list': product_list,
+            }
     return render(request, template_name='clothes/home.html', context=context)
 
 

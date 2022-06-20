@@ -1,70 +1,132 @@
-{% extends 'clothes/base.html' %} {% block content %}
+{% extends 'clothes/base.html' %} {% block content %} {% load static %}
 <body>
     {{ product.id|json_script:"product_id" }}
-    <div class="container">
-        <div class="row">
+    <div style="margin-right: 65px; margin-left: 65px">
+        <div class="row gx-3">
             <div class="col">
                 <img src="{{ product.image.url }}" alt="" />
             </div>
             <div class="col">
-                <div class="container">
-                    <div class="row row-cols-1">
-                        <div class="col">
-                            <h4>{{ product.product_name }}</h4>
-                            <p>Giá: {{ product.price }}&#8363;</p>
-                        </div>
-                        <div class="col">
-                            <form
-                                action="{% url 'clothes:add_cart_item' %}"
-                                method="post"
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.product_name }}</h5>
+                        <h6
+                            class="card-subtitle mb-2 text-muted"
+                            style="margin-top: 10px"
+                        >
+                            Giá: {{ product.price }}&#8363;
+                        </h6>
+                        <form
+                            action="{% url 'clothes:add_cart_item' %}"
+                            method="post"
+                        >
+                            {% csrf_token %}
+                            <input
+                                type="text"
+                                name="product_id"
+                                value="{{ product.id }}"
+                                hidden
+                            />
+                            <h6
+                                class="card-subtitle mb-2 text-muted"
+                                style="margin-top: 20px"
                             >
-                                {% csrf_token %}
-                                <input
-                                    type="text"
-                                    name="product_id"
-                                    value="{{ product.id }}"
-                                    hidden
-                                />
-                                {% for size in product.product_size.all %}
-                                <div class="form-check form-check-inline">
-                                    <input
-                                        type="radio"
-                                        name="size_id"
-                                        id="size{{ forloop.counter }}"
-                                        value="{{ size.id }}"
-                                        required
-                                    />
-                                    <label
-                                        class="form-check-label"
-                                        for="size{{ forloop.counter }}"
-                                        >{{ size.product_size }}</label
-                                    >
+                                Kích thước
+                            </h6>
+                            <div class="card d-inline-flex">
+                                <div class="col">
+                                    {% for size in product.product_size.all%}
+                                    <div class="form-check form-check-inline">
+                                        <input
+                                            type="radio"
+                                            name="size_id"
+                                            id="size{{ forloop.counter }}"
+                                            value="{{ size.id }}"
+                                            required
+                                        />
+                                        <label
+                                            class="form-check-label"
+                                            for="size{{ forloop.counter }}"
+                                            >{{ size.product_size}}</label
+                                        >
+                                    </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
-                                <br />
-                                <label for="number">Số Lượng: </label>
+                            </div>
+                            <div style="margin-top: 10px">
+                                <a
+                                    href="#"
+                                    class="card-subtitle mb-2 text-muted"
+                                    style="margin-top: 50px"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#Modal"
+                                >
+                                    Hướng dẫn đo kích thước
+                                </a>
+                            </div>
+                            <div class="mb-3" style="margin-top: 20px">
+                                <label for="number" class="form-label"
+                                    >Số lượng sản phẩm</label
+                                >
                                 <input
                                     type="number"
+                                    class="form-control"
+                                    id="number"
                                     name="number"
                                     min="1"
                                     max="100"
-                                    id="number"
                                     required
+                                    placeholder="1"
+                                    style="width: 150px"
                                 />
-                                <br />
+                            </div>
+                            <div
+                                style="
+                                    display: flex;
+                                    justify-content: center;
+                                    margin-top: 20px;
+                                "
+                            >
                                 <input
+                                    class="btn btn-warning"
                                     type="submit"
                                     value="Thêm vào giỏ hàng"
+                                    style="margin-right: 20px"
                                 />
-
                                 <input
+                                    class="btn btn-danger"
                                     type="submit"
                                     formaction="{% url 'clothes:order_view' %}"
                                     value="Mua ngay"
                                 />
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div
+        class="modal fade"
+        id="Modal"
+        tabindex="-1"
+        aria-labelledby="Modal"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Hướng dẫn đo kích thước
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <img
+                        src="{% static '/images/size.jpg' %}"
+                        class="img-fluid"
+                        alt=""
+                    />
                 </div>
             </div>
         </div>

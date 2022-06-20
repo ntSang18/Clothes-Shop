@@ -1,8 +1,13 @@
-{% extends 'clothes/base.html' %} {% block content %} {% if product_list %}
+{% extends 'clothes/base.html' %} {% block content %} {% if product_list %} 
+{% load static %}
+<div style="width: 100%; display: flex; justify-content: center;">
+    <img src="{% static '/images/overview.jpg' %}" class="img-fluid" alt="" />
+</div>
+<hr style="margin-right: 15%; margin-left: 15%;"> 
 <ul>
     <div class="row row-cols-auto">
         {% for product in product_list %}
-        <div class="col">
+        <div class="col gy-4">
             <div class="card h-100" style="width: 15rem">
                 <img
                     src="{{ product.image.url }}"

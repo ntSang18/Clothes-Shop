@@ -25,6 +25,5 @@ class OrderAdmin(admin.ModelAdmin):
 admin.site.register(Product)
 admin.site.register(Product_type)
 admin.site.register(Product_size)
-admin.site.register(Cart_item)
 admin.site.register(User, UserAdmin)
 admin.site.register(Order, OrderAdmin)

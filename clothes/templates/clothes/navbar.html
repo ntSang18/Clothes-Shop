@@ -75,10 +75,17 @@
                     <a class="nav-link disabled">Disabled</a>
                 </li> -->
             </ul>
-            <form class="d-flex" role="search">
+            <form
+                class="d-flex"
+                role="search"
+                action="{% url 'clothes:home' %}"
+                method="post"
+            >
+                {% csrf_token %}
                 <input
                     class="form-control me-2"
                     type="search"
+                    name="search"
                     placeholder="Search"
                     aria-label="Search"
                 />
